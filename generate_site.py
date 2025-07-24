@@ -5,7 +5,7 @@ from jinja2 import Environment, FileSystemLoader
 
 # 🔧 Beállítás
 SERVICE_ACCOUNT_FILE = 'credentials.json'
-FOLDER_ID = 'A_TE_MAPPÁD_ID_JÖN_IDE'
+FOLDER_ID = '1RCnd1OUTP2NzO62fOTtgwZZ32TwWRhvr'
 OUTPUT_DIR = 'output'
 
 # Autentikáció
@@ -35,6 +35,8 @@ for folder_id in folders.keys():
         q=f"'{folder_id}' in parents and trashed = false",
         fields="files(id, name, webViewLink, mimeType)",
     ).execute().get('files', [])
+    # Sort subfiles by name (ascending)
+    subfiles.sort(key=lambda x: x['name'])
     folders[folder_id]['files'].extend(subfiles)
 
 # Jinja HTML generálás
